@@ -30,6 +30,8 @@ The solution comes up with a basic web service that provides HTTP endpoints to m
 
 Create a local database or use a public MySQL service hosted on AWS or Azure, or launch a local MySQL container, etc. **Put the database access credential in `src/main/resources/application.properties`.**
 
+![img](http://7sbqda.com1.z0.glb.clouddn.com/WX20171001-210957@2x.png)
+
 Once database is created, initialize the database with a SQL script located in `data/db.sql`.  
 
 ### Web Service
@@ -38,7 +40,14 @@ Project can be imported to IntelliJ IDEA, or simply use maven to resolve depende
 
 If you use IDEA, you can import the project first, IDEA should be able to resolve all the dependencies automatically according to `pom.xml`. Right click on `src/main/java/me.zpjiang/FeedsApplication` and choose `Run FeedsApplication`, it should help you to launch the service from IDEA.
 
-If you use maven, you can run `mvn compile` to compile the project, dependencies will be downloaded automatically if they do not exist. Run `mvn sprint-boot:run` to launch the project.
+![img](http://7sbqda.com1.z0.glb.clouddn.com/1506917617540.jpg)
+
+If you use maven, you can run `mvn compile` to compile the project, dependencies will be downloaded automatically if they do not exist. Run `mvn spring-boot:run` to launch the project.
+
+```sh
+mvn compile          # compile the project
+mvn spring-boot:run  # run the project
+```
 
 ## Basic Design
 
@@ -49,6 +58,8 @@ In order to support operation 1 to 4, I have to develop a basic data model to pe
 Considering that a user can subscribe multiple feeds and a feed can be subscribed by multiple users, thus it is a `many to many` mapping between `User` and `Feed`. Similarly, a feed can have multiples articles while an article can be published into multiple feeds, thus it is also a `many to many` mapping between `Feed` and `Article`. 
 
 I created two new tables to store the mappings `Subscription` and `Publication`.
+
+![img](http://7sbqda.com1.z0.glb.clouddn.com/WX20171001-211756@2x.png)
   
 ### Web Service
 
@@ -106,12 +117,19 @@ Don't forget to start the web service first before running Postman.
 
 ### E2E Testing
 
-In IDEA, you can choose to run `/src/test/java/me/zpjiang/FeedsApplicationTests`, which covers most of use cases for Feeds. 
+In IDEA, you can choose to run `/src/test/java/me/zpjiang/FeedsApplicationTests`, which covers most of use cases for Feeds.
+ 
+![img](http://7sbqda.com1.z0.glb.clouddn.com/1506918045732.jpg)
  
 ### Concurrent Testing
 
 In IDEA, you can also shoose to run `/src/test/java/me/zpjiang/FeedsApplicationConcurrentTests`, which creates 10 threads to perform sub/unsub and publish actions simultaneously.
 
+![img](http://7sbqda.com1.z0.glb.clouddn.com/1506918116423.jpg)
+
 ### Test from Maven
 
 run `mvn test` directly, it should be able to run both E2E tests and concurrent test cases.
+
+![img](http://7sbqda.com1.z0.glb.clouddn.com/WechatIMG130.jpeg)
+![img](http://7sbqda.com1.z0.glb.clouddn.com/WechatIMG131.jpeg)
