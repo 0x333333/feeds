@@ -68,6 +68,10 @@ public class FeedsApplicationConcurrentTest {
         for (int i = 0; i < users.size(); i++) {
             getArticles(users.get(i));
         }
+
+        cleanTestUsers(users);
+        cleanTestArticle(articles);
+        cleanTestFeeds(feeds);
     }
 
     private void getArticles(User user) {
