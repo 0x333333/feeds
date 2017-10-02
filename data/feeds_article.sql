@@ -1,2 +1,0 @@
-INSERT INTO feeds.article (id, Title, Body) VALUES ('5c1f9771-d16d-4853-8fff-cfc391e5603f', 'First Article', null);
-INSERT INTO feeds.article (id, Title, Body) VALUES ('8b250a78-7a81-495c-818c-3a944cffb7f7', 'Second Article', null);

@@ -81,8 +81,8 @@ CREATE TABLE `publication` (
   UNIQUE KEY `publication_PublicationID_uindex` (`id`),
   KEY `publication_feed_ID_fk` (`feedID`),
   KEY `publication_article_ID_fk` (`articleID`),
-  CONSTRAINT `publication_article_ID_fk` FOREIGN KEY (`articleID`) REFERENCES `article` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `publication_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `publication_article_ID_fk` FOREIGN KEY (`articleID`) REFERENCES `article` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `publication_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,8 +110,8 @@ CREATE TABLE `subscription` (
   UNIQUE KEY `subscription_SubscriptionID_uindex` (`id`),
   KEY `subscription_user_ID_fk` (`userID`),
   KEY `subscription_feed_ID_fk` (`feedID`),
-  CONSTRAINT `subscription_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `subscription_user_ID_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `subscription_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `subscription_user_ID_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
