@@ -47,7 +47,7 @@ Create a local database or use a public MySQL service hosted on AWS or Azure, or
 
 <img alt="config" src="http://7sbqda.com1.z0.glb.clouddn.com/WX20171001-210957@2x.png" width="400"/>
 
-Once database is created, initialize the database with a SQL script located in `data/db.sql`.  
+**Once database is created, initialize the database with a SQL script located in `data/db.sql`.** You can do this from a MySQL client, like MySQL Workbench, Sequel Pro, etc. Or you can imported it from MySQL command line too by typing in the full path of sql file.
 
 ### Web Service
 
@@ -141,9 +141,6 @@ In IDEA, you can choose to run `/src/test/java/me/zpjiang/FeedsApplicationTests`
 In IDEA, you can also shoose to run `/src/test/java/me/zpjiang/FeedsApplicationConcurrentTests`, which creates 10 threads to perform sub/unsub and publish actions simultaneously.
 
 <img alt="config" src="http://7sbqda.com1.z0.glb.clouddn.com/1506918116423.jpg" width="400"/>
-
-
-![img](
 
 ### Test from Maven
 
