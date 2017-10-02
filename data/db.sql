@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `article`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `article` (
   `id` varchar(36) NOT NULL,
-  `Title` varchar(36) NOT NULL,
-  `Body` text,
+  `title` varchar(128) NOT NULL,
+  `body` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `article_ID_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `feed`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feed` (
   `id` varchar(36) NOT NULL,
-  `Name` varchar(64) NOT NULL,
+  `name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `feed_ID_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -74,17 +74,15 @@ DROP TABLE IF EXISTS `publication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `publication` (
-  `PublicationID` varchar(36) NOT NULL,
-  `FeedID` varchar(36) DEFAULT NULL,
-  `ArticleID` varchar(36) DEFAULT NULL,
-  `CreateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `IsDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`PublicationID`),
-  UNIQUE KEY `publication_PublicationID_uindex` (`PublicationID`),
-  KEY `publication_feed_ID_fk` (`FeedID`),
-  KEY `publication_article_ID_fk` (`ArticleID`),
-  CONSTRAINT `publication_article_ID_fk` FOREIGN KEY (`ArticleID`) REFERENCES `article` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `publication_feed_ID_fk` FOREIGN KEY (`FeedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE
+  `id` varchar(75) NOT NULL,
+  `feedID` varchar(36) DEFAULT NULL,
+  `articleID` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `publication_PublicationID_uindex` (`id`),
+  KEY `publication_feed_ID_fk` (`feedID`),
+  KEY `publication_article_ID_fk` (`articleID`),
+  CONSTRAINT `publication_article_ID_fk` FOREIGN KEY (`articleID`) REFERENCES `article` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `publication_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -105,16 +103,15 @@ DROP TABLE IF EXISTS `subscription`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscription` (
-  `SubscriptionID` varchar(36) NOT NULL,
-  `UserID` varchar(36) DEFAULT NULL,
-  `FeedID` varchar(36) DEFAULT NULL,
-  `CreateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`SubscriptionID`),
-  UNIQUE KEY `subscription_SubscriptionID_uindex` (`SubscriptionID`),
-  KEY `subscription_user_ID_fk` (`UserID`),
-  KEY `subscription_feed_ID_fk` (`FeedID`),
-  CONSTRAINT `subscription_feed_ID_fk` FOREIGN KEY (`FeedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `subscription_user_ID_fk` FOREIGN KEY (`UserID`) REFERENCES `user` (`id`) ON UPDATE CASCADE
+  `id` varchar(75) NOT NULL,
+  `userID` varchar(36) DEFAULT NULL,
+  `feedID` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `subscription_SubscriptionID_uindex` (`id`),
+  KEY `subscription_user_ID_fk` (`userID`),
+  KEY `subscription_feed_ID_fk` (`feedID`),
+  CONSTRAINT `subscription_feed_ID_fk` FOREIGN KEY (`feedID`) REFERENCES `feed` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `subscription_user_ID_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -136,7 +133,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` varchar(36) NOT NULL,
-  `Name` varchar(128) NOT NULL,
+  `name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_ID_uindex` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -161,4 +158,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-28 21:22:25
+-- Dump completed on 2018-09-28 21:22:25

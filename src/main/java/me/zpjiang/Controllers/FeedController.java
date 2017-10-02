@@ -93,8 +93,14 @@ public class FeedController {
         }
 
         Publication pub = new Publication(pubID, feedID, articleID);
-        publicationRepository.save(pub);
-        logger.info(String.format("Add article %s to feed %s successfully.", articleID, feedID));
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            publicationRepository.save(pub);
+            logger.info(String.format("Add article %s to feed %s successfully.", articleID, feedID));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

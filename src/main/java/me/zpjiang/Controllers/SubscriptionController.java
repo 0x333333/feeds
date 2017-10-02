@@ -57,14 +57,15 @@ public class SubscriptionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
         }
 
-        Subscription sub = new Subscription();
-        sub.setId(subID);
-        sub.setUserID(userID);
-        sub.setFeedID(feedID);
-        subRepository.save(sub);
-        logger.info("User %s subscribe feed %s successfully.", userID, feedID);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        Subscription sub = new Subscription(subID, userID, feedID);
+        try {
+            subRepository.save(sub);
+            logger.info(String.format("User %s subscribe feed %s successfully.", userID, feedID));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(path = "/sub/user/{userID}/feed/{feedID}", method = RequestMethod.DELETE)
@@ -91,9 +92,13 @@ public class SubscriptionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
         }
 
-        subRepository.delete(subID);
-        logger.info(String.format("User %s unsubscribe feed %s successfully.", userID, feedID));
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            subRepository.delete(subID);
+            logger.info(String.format("User %s unsubscribe feed %s successfully.", userID, feedID));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

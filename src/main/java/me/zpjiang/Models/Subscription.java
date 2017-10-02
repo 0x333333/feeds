@@ -20,6 +20,12 @@ public class Subscription {
     public Subscription() {
     }
 
+    public Subscription(String id, String userID, String feedID) {
+        this.id = id;
+        this.userID = userID;
+        this.feedID = feedID;
+    }
+
     public String getId() {
         return id;
     }

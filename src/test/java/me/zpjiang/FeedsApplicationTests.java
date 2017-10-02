@@ -1,5 +1,6 @@
 package me.zpjiang;
 
+import jdk.net.SocketFlow;
 import me.zpjiang.Models.Article;
 import me.zpjiang.Models.Feed;
 import me.zpjiang.Models.User;
@@ -58,6 +59,7 @@ public class FeedsApplicationTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
+		cleanTestSubscription(user, feed);
 		cleanTestUser(user);
 		cleanTestFeed(feed);
 	}
@@ -111,9 +113,70 @@ public class FeedsApplicationTests {
                 .andDo(print())
                 .andExpect(status().isOk());
 
+		cleanTestSubscription(user, feed);
 		cleanTestUser(user);
 		cleanTestFeed(feed);
 	}
+
+	@Test
+    public void testAddArticle() throws Exception {
+	    User user = createTestUser();
+	    Feed feed = createTestFeed();
+        Article article = createTestArticle();
+
+        // first subscribe, should be OK
+        String subPath = String.format("/sub/user/%s/feed/%s", user.getId(), feed.getId());
+        mockMvc.perform(post(subPath))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // add article
+        String pubPath = String.format("/feeds/feed/%s/article/%s", feed.getId(), article.getId());
+        mockMvc.perform(post(pubPath))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // add again, should return bad request
+        mockMvc.perform(post(pubPath))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        cleanTestSubscription(user, feed);
+        cleanTestPublication(feed, article);
+        cleanTestFeed(feed);
+        cleanTestUser(user);
+        cleanTestArticle(article);
+    }
+
+    @Test
+    public void testGetArticle() throws Exception {
+	    User user = createTestUser();
+	    Feed feed = createTestFeed();
+        Article article = createTestArticle();
+
+        // first subscribe, should be OK
+        String subPath = String.format("/sub/user/%s/feed/%s", user.getId(), feed.getId());
+        mockMvc.perform(post(subPath))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        // add article
+        String pubPath = String.format("/feeds/feed/%s/article/%s", feed.getId(), article.getId());
+        mockMvc.perform(post(pubPath))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        String listArticlePath = String.format("/articles/%s", user.getId());
+        mockMvc.perform(get(listArticlePath))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        cleanTestSubscription(user, feed);
+        cleanTestPublication(feed, article);
+        cleanTestFeed(feed);
+        cleanTestUser(user);
+        cleanTestArticle(article);
+    }
 
 	private User createTestUser() {
 	    String userID = UUID.randomUUID().toString();
@@ -146,5 +209,15 @@ public class FeedsApplicationTests {
 
     private void cleanTestArticle(Article article) {
 	    articleRepository.delete(article);
+    }
+
+    private void cleanTestSubscription(User user, Feed feed) {
+        String subscriptionID = String.format("%s_%s", user.getId(), feed.getId());
+        subscriptionRepository.delete(subscriptionID);
+    }
+
+    private void cleanTestPublication(Feed feed, Article article) {
+	    String publicationID = String.format("%s_%s", feed.getId(), article.getId());
+        publicationRepository.delete(publicationID);
     }
 }
